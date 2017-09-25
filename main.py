@@ -16,15 +16,22 @@ from util import mnist
 def get_kernels():
     result = []
     uuid = 1
+
+    # 1. 3x3 kernels
     for i in range(8):
-        # 3x3 kernels
-        kernel = conv_layer.Kernel(3, activation.tanhFunc, uuid)
+        func = activation.tanhFunc
+        if i % 2 == 0:
+            func = activation.reluFunc
+        kernel = conv_layer.Kernel(3, func, uuid)
         result.append(kernel)
         uuid += 1
 
+    # 2. 5x5 kernels
     for i in range(8):
-        # 5x5 kernels
-        kernel = conv_layer.Kernel(5, activation.reluFunc, uuid)
+        func = activation.tanhFunc
+        if i % 2 == 0:
+            func = activation.reluFunc
+        kernel = conv_layer.Kernel(5, func, uuid)
         result.append(kernel)
         uuid += 1
     return result
