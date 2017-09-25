@@ -17,7 +17,7 @@ def init_nd_weights(shape, c=1.0):
 
 
 def flip180X(kernel, result):
-    """flip the kernel matrix 180"""
+    """flip the kernel weight matrix 180 degrees."""
     shape = kernel.shape
     m = shape[0] - 1
     n = shape[1] - 1
@@ -202,7 +202,7 @@ class Kernel(object):
         self.delta_bias = np.sum(self.delta)
 
         if self.uuid == 3 and self.counter % 100 == 0:
-            print("[200] w.delta=%s, bias.delta=%s" % (print_matrix_row(self.delta_weights), self.delta_bias))
+            print("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
             print("[206] delta=%s" % (np.sum(np.absolute(self.delta))))
         return
 
@@ -437,7 +437,8 @@ class MaxPoolingLayer(Layer):
         return self.output
 
 
-def print_matrix_row(m):
+def matrix_tostr(m):
+    """this function is used for debugging only."""
     t = m.reshape(-1)
     result = "["
     for e in t:
