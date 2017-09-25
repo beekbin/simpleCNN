@@ -13,35 +13,6 @@ from nn import simple_nn
 from util import mnist
 
 
-def construct_nn(l2=0.0):
-    img_input = nn_layer.InputLayer("mnist_input", 784)
-    output_layer = nn_layer.SoftmaxOutputLayer("mnist_output", 10)
-
-    # 1. set input and output layers
-    nn = simple_nn.NNetwork()
-    nn.set_input(img_input)
-    nn.set_output(output_layer)
-
-    # 2. add some hidden layers
-    h1 = nn_layer.HiddenLayer("h1", 256, activation.tanhFunc)
-    h1.set_lambda2(l2)
-    nn.add_hidden_layer(h1)
-
-    h2 = nn_layer.HiddenLayer("h2", 64, activation.tanhFunc)
-    h2.set_lambda2(l2)
-    nn.add_hidden_layer(h2)
-
-    h3 = nn_layer.HiddenLayer("h3", 10, activation.reluFunc)
-    h3.set_lambda2(l2)
-    nn.add_hidden_layer(h3)
-
-    # 3. complete nn construction
-    # print("%s" % (nn))
-    nn.connect_layers()
-    print(nn.get_detail())
-    return nn
-
-
 def get_kernels():
     result = []
     uuid = 1
