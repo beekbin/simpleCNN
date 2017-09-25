@@ -19,18 +19,18 @@ def get_kernels():
 
     # 1. 3x3 kernels
     for i in range(8):
-        func = activation.tanhFunc
-        if i % 2 == 0:
-            func = activation.reluFunc
+        func = activation.reluFunc
+        if i % 3 == 0:
+            func = activation.tanhFunc
         kernel = conv_layer.Kernel(3, func, uuid)
         result.append(kernel)
         uuid += 1
 
     # 2. 5x5 kernels
     for i in range(8):
-        func = activation.tanhFunc
-        if i % 2 == 0:
-            func = activation.reluFunc
+        func = activation.reluFunc
+        if i % 3 == 0:
+            func = activation.tanhFunc
         kernel = conv_layer.Kernel(5, func, uuid)
         result.append(kernel)
         uuid += 1
@@ -141,8 +141,8 @@ def train_nn(data_dir):
         lr = get_lr(i, lr)
         print("[%s] begin epoch-%s, lr=%.6f" % (str(datetime.now()), i, lr))
         train_it(nn, train_data, lr)
-        evaluate_it(nn, train_data, "train")
         evaluate_it(nn, test_data, "test")
+        evaluate_it(nn, train_data, "train")
         print("[%s] end epoch-%s" % (str(datetime.now()), i))
 
     return
