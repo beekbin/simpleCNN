@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import sys
+from multiprocessing import Pool
 from datetime import datetime
 import numpy as np
 
@@ -225,9 +226,43 @@ def test_active():
     return
 
 
+def test4():
+    # 1. init
+    shape = (28, 28)
+    kshape = (3, 3)
+    x = np.array(range(784), dtype=np.float64).reshape(shape)
+    kernel = np.ones(kshape, dtype=np.float64)
+    padding_size = int((kshape[0]-1)/2)
+
+    # 2. test 1
+    begin = datetime.now()
+    for i in range(1000):
+        o = calc_conv2(x, kernel, padding_size)
+    delta = datetime.now() - begin
+    print("[%s] delta.1=%s" % (str(begin), str(delta)))
+
+    # 3. test 2
+    begin = datetime.now()
+    pool = Pool(processes=4)
+    for i in range(125):
+        args = (x, kernel, padding_size)
+        results = [pool.apply_async(calc_conv2, args) for i in range(8)]
+        for i in range(8):
+            oo = results[i].get()
+
+    delta = datetime.now() - begin
+    print("[%s] delta.1=%s" % (str(begin), str(delta)))
+
+    a = np.sum(oo-o)
+    print("a=%s" % a)
+    
+    return
+
+
 def main():
     test()
     test2()
+    test4()
     # test_normal_active()
     # test_active()
     return
