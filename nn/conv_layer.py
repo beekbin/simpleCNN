@@ -16,7 +16,7 @@ def init_nd_weights(shape, c=1.0):
     return tmp.reshape(shape)
 
 
-def flip180X(kernel, result):
+def flip180x(kernel, result):
     """flip the kernel weight matrix 180 degrees."""
     shape = kernel.shape
     m = shape[0] - 1
@@ -65,7 +65,7 @@ def get_slice(img, i, j, kernel_size, padding_size, output):
     return
 
 
-def calc_conv(img, kernel, padding_size):
+def calc_conv(img, kernel, psize, output=None):
     """calculate 2d convoluation
     img: a 2D image of shape(height, width)
     kernel: a 2D filter of shape(ksize, ksize)
@@ -75,12 +75,40 @@ def calc_conv(img, kernel, padding_size):
     ksize = kernel.shape[0]
 
     shape = img.shape
-    output = np.zeros(shape)
+    if output is None:
+        output = np.zeros(shape, dtype=np.float64)
+
+    si = 0
+    di = psize + 1
+    ei = ksize - psize - 1
     for i in range(shape[0]):
+        if di <= 0:
+            si += 1
+        else:
+            di -= 1
+
+        if ei < shape[0]:
+            ei += 1
+
+        sj = 0
+        dj = psize + 1
+        ej = ksize - psize - 1
         for j in range(shape[1]):
-            get_slice(img, i, j, ksize, padding_size, patch)
+            if dj <= 0:
+                sj += 1
+            else:
+                dj -= 1
+            if ej < shape[1]:
+                ej += 1
+
+            patch.fill(0.0)
+            # print("i=(%s,%s, %s), j=(%s,%s, %s)" % (si, ei, di, sj, ej, dj))
+            ddi = ei - si + di
+            ddj = ej - sj + dj
+            patch[di:ddi, dj:ddj] = img[si:ei, sj:ej]
             patch *= kernel
             output[i, j] = np.sum(patch)
+
     return output
 
 
@@ -151,7 +179,8 @@ class Kernel(object):
         shape = input_data.shape
         for i in range(shape[0]):
             channel = input_data[i]
-            self.z += calc_conv(channel, self.weights, self.padding_size)
+            self.z += calc_conv(channel, self.weights[i], self.padding_size)
+            # calc_convx(channel, self.weights, self.padding_size, output=self.z)
 
         # 2. activate
         self.func.forward(self.z, out=self.output)
@@ -214,7 +243,7 @@ class Kernel(object):
         channels = self.weights.shape[0]
         xweights = np.zeros(self.weights[0].shape, dtype=np.float64)
         for c in range(channels):
-            flip180X(self.weights[c], xweights)
+            flip180x(self.weights[c], xweights)
             self.delta_input[c] = calc_conv(self.delta, xweights, self.padding_size)
         return
 
@@ -287,7 +316,7 @@ class ConvLayer(Layer):
         return
 
     def active(self):
-        x = self.input_layer.get_output()
+        # x = self.input_layer.get_output()
         for i in range(len(self.kernels)):
             k = self.kernels[i]
             self.output[i, :, :] = k.active()
@@ -364,7 +393,7 @@ class MaxPoolingLayer(Layer):
         bi = i * self.k1
         bj = j * self.k2
 
-        ei = bi + self.k1;
+        ei = bi + self.k1
         if ei > layer.shape[0]:
             ei = layer.shape[0]
         ej = bj + self.k2

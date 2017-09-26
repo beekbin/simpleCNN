@@ -90,7 +90,7 @@ def train_it(nn, train_data, lr):
         label = labels[i, :]
         img = imgs[i, :]
         nn.train(img, label, lr)
-        if num % 1000 == 0:
+        if num % 100 == 0:
             print("[%s] num=%d" % (str(datetime.now()), num))
         num += 1
 
