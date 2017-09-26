@@ -177,40 +177,15 @@ class Kernel(object):
         # 1. calc z
         input_data = self.input_layer.get_output()
         shape = input_data.shape
+
         for i in range(shape[0]):
             channel = input_data[i]
             self.z += calc_conv(channel, self.weights[i], self.padding_size)
-            # calc_convx(channel, self.weights, self.padding_size, output=self.z)
 
         # 2. activate
         self.func.forward(self.z, out=self.output)
         self.counter += 1
         return self.output
-
-    def calc_weight_deltaX(self):
-        """delta_weight = Delta(l+1) * X"""
-        self.delta_weights.fill(0.0)
-        patch = np.zeros((self.size, self.size))
-
-        input_data = self.input_layer.get_output()
-        # print("[163] input.shape=%s" % (input_data.shape,))
-
-        shape = self.delta.shape
-        for c in range(input_data.shape[0]):
-            img = input_data[c]
-            for i in range(shape[0]):
-                for j in range(shape[1]):
-                    if self.delta[i, j] == 0.0:
-                        continue
-
-                    # print("[173] img.shape=%s" % (img.shape,))
-                    get_slice(img, i, j, self.size, self.padding_size, patch)
-                    # print("[175] patch.shape=%s, delta.shape=%s" % (patch.shape, self.delta.shape))
-                    # print("[177] delta_weights.shape=%s" % (self.delta_weights.shape,))
-                    self.delta_weights[c] += (patch * self.delta[i, j])
-
-        self.delta_bias = np.sum(self.delta)
-        return
 
     def calc_weight_delta(self):
         """delta_weight = Delta(l+1) * X"""
@@ -230,7 +205,7 @@ class Kernel(object):
 
         self.delta_bias = np.sum(self.delta)
 
-        if self.uuid == 3 and self.counter % 100 == 0:
+        if self.uuid == 1 and self.counter % 1000 == 0:
             print("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
             print("[206] delta=%s" % (np.sum(np.absolute(self.delta))))
         return

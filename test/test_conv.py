@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import sys
+from multiprocessing import Process, Queue
 from datetime import datetime
 import numpy as np
 
@@ -161,6 +162,49 @@ def test2():
 
     return
 
+
+def test3():
+    # 1. init
+    shape = (28, 28)
+    kshape = (3, 3)
+    x = np.array(range(784), dtype=np.float64).reshape(shape)
+    kernel = np.ones(kshape, dtype=np.float64)
+    padding_size = int((kshape[0]-1)/2)
+
+    # 2. test 1
+    begin = datetime.now()
+    for i in range(1000):
+        o = calc_conv(x, kernel, padding_size)
+    delta = datetime.now() - begin
+    print("[%s] delta.1=%s" % (str(begin), str(delta)))
+
+    # 3. test2
+    begin = datetime.now()
+    for i in range(1000):
+        oo = calc_conv2(x, kernel, padding_size)
+    delta = datetime.now() - begin
+    print("[%s] delta.2=%s" % (str(begin), str(delta)))
+
+    # 4. test3
+    begin = datetime.now()
+    oo = np.zeros(x.shape, dtype=np.float64)
+    q = Queue()
+    for i in range(1000):
+        workers = []
+        for j in range(10):
+            myarg = (x, kernel, padding_size)
+            t = Process(target=calc_conv2, args=myarg)
+            workers.append(t)
+            t.start()
+        for t in workers:
+            t.join()
+    delta = datetime.now() - begin
+    print("[%s] delta.3=%s" % (str(begin), str(delta)))
+
+    return
+
+
+
 def get_kernels():
     result = []
     uuid = 1
@@ -227,7 +271,8 @@ def test_active():
 
 def main():
     test()
-    test2()
+    # test2()
+    test3()
     # test_normal_active()
     # test_active()
     return
