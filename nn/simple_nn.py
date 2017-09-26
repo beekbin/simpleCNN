@@ -78,8 +78,8 @@ class NNetwork(object):
         for layer in reversed(self.hidden_layers):
             layer.calc_error()
 
-        if len(self.errors) == 100:
-            print("cost=%.3f" % (sum(self.errors)/len(self.errors)))
+        if len(self.errors) == 1000:
+            print("[82] cost=%.3f" % (sum(self.errors)/len(self.errors)))
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
         return

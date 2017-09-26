@@ -204,7 +204,6 @@ def test3():
     return
 
 
-
 def get_kernels():
     result = []
     uuid = 1
