@@ -64,7 +64,7 @@ def construct_cnn(l2=0.0):
     h2.set_lambda2(l2)
     nn.add_hidden_layer(h2)
 
-    h3 = nn_layer.HiddenLayer("h3", 10, activation.leakyReluFunc)
+    h3 = nn_layer.HiddenLayer("h3", 10, activation.reluFunc)
     h3.set_lambda2(l2)
     nn.add_hidden_layer(h3)
 
@@ -120,7 +120,7 @@ def evaluate_it(nn, test_data, prefix):
 
 
 def get_lr(step, current_lr):
-    lrs = {0: 0.008, 1: 0.006, 4: 0.005, 5: 0.003, 6: 0.002, 8: 0.001, 10: 0.0005, 15: 0.0001}
+    lrs = {0: 0.008, 1: 0.005, 2: 0.003, 5: 0.002, 6: 0.001, 8: 0.0008, 10: 0.0005, 15: 0.0001}
     if step in lrs:
         return lrs[step]
     return current_lr

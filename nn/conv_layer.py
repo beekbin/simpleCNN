@@ -230,9 +230,10 @@ class Kernel(object):
 
         self.delta_bias = np.sum(self.delta)
 
-        if self.uuid == 3 and self.counter % 100 == 0:
+        if self.uuid == 3 and self.counter % 1000 == 0:
             print("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
-            print("[206] delta=%s" % (np.sum(np.absolute(self.delta))))
+            print("[235] weights=%s" % (matrix_tostr(self.weights)))
+            print("[236] delta=%s" % (np.sum(np.absolute(self.delta))))
         return
 
     def calc_input_delta(self):
