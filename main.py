@@ -8,6 +8,7 @@ import numpy as np
 
 from nn import nn_layer
 from nn import conv_layer
+from nn import pooling_layer
 from nn import activation
 from nn import simple_nn
 from util import mnist
@@ -52,7 +53,7 @@ def construct_cnn(l2=0.0):
     nn.add_hidden_layer(c1)
 
     # 2x2 none-overlapping max-pooling
-    p1 = conv_layer.MaxPoolingLayer("pool1", 2, 2)
+    p1 = pooling_layer.MaxPoolingLayer("pool1", 2, 2)
     nn.add_hidden_layer(p1)
 
     # 3. add some full-connected hidden layers

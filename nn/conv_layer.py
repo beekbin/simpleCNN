@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import math
+from multiprocessing import Pool
 import numpy as np
 from nn_layer import Layer
 
@@ -205,9 +206,9 @@ class Kernel(object):
 
         self.delta_bias = np.sum(self.delta)
 
-        if self.uuid == 1 and self.counter % 1000 == 0:
+        if self.uuid == 3 and self.counter % 1000 == 0:
             print("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
-            print("[206] delta=%s" % (np.sum(np.absolute(self.delta))))
+            print("[206] uuid=%s, counter=%s, delta=%s" % (self.uuid, self.counter, np.sum(np.absolute(self.delta))))
         return
 
     def calc_input_delta(self):
@@ -260,6 +261,7 @@ class ConvLayer(Layer):
         super(ConvLayer, self).__init__(name, 0)
         self.kernels = []
         self.delta = None
+        # self.pool = Pool(processes=4)
         return
 
     def add_kernel(self, kernel):
@@ -291,10 +293,24 @@ class ConvLayer(Layer):
         return
 
     def active(self):
-        # x = self.input_layer.get_output()
         for i in range(len(self.kernels)):
             k = self.kernels[i]
-            self.output[i, :, :] = k.active()
+            self.output[i] = k.active()
+        return
+
+    def active2(self):
+        pool = Pool(processes=5)
+        results = []
+        for i in range(len(self.kernels)):
+            # args = (self.kernels[i], )
+            k = self.kernels[i]
+            result = pool.apply_async(do_active, (k, ))
+            results.append(result)
+
+        for i in range(len(self.kernels)):
+            self.output[i, :, :] = results[i].get()
+        pool.close()
+        pool.join()
         return
 
     def calc_input_delta(self, delta):
@@ -314,131 +330,31 @@ class ConvLayer(Layer):
             k.calc_error(self.delta[i])
         return
 
+    def calc_error2(self):
+        self.next_layer.calc_input_delta(self.delta)
+        results = []
+        for i in range(len(self.kernels)):
+            args = (self.kernels[i], self.delta[i])
+            result = self.pool.apply_async(do_calc_error, args)
+            results.append(result)
+
+        for i in range(len(results)):
+            results[i].get()
+        return
+
     def update_weights(self, lr):
         for i in range(len(self.kernels)):
             self.kernels[i].update_weight(lr, self.lambda2)
         return
 
+    def __getstate__(self):
+        self_dict = self.__dict__.copy()
+        del self_dict['pool']
+        return self_dict
 
-class MaxPoolingLayer(Layer):
-    """None overlap max pooling layer."""
-    def __init__(self, name, k1, k2):
-        super(MaxPoolingLayer, self).__init__(name, k1*k2)
-        self.k1 = k1
-        self.k2 = k2
-        self.transform_output_flag = False
-        self.input_keeper = None
-        self.channel_num = 0
-        self.delta = None
-        return
+    def __setstate__(self, state):
+        self.__dict__.update(state)
 
-    def init(self):
-        if self.input_layer is None:
-            print("ERROR: input layer is None.")
-            return
-
-        if self.next_layer is None:
-            print("ERROR: next layer is None.")
-            return
-
-        # 1. set a keeper matrix to keep track of the selected position
-        x = self.input_layer.get_output()
-        self.channel_num = x.shape[0]
-        self.input_keeper = np.zeros(x.shape, dtype=np.int8)
-
-        # 2. set output
-        d1 = x.shape[1] // self.k1
-        if d1 * self.k1 != x.shape[1]:
-            d1 += 1
-        d2 = x.shape[2] // self.k2
-        if d2 * self.k2 != x.shape[2]:
-            d2 += 1
-
-        self.size = x.shape[0] * d1 * d2
-        shape = (x.shape[0], d1, d2)
-        self.output = np.zeros(shape)
-        self.delta = np.zeros(shape)
-        if type(self.next_layer) is ConvLayer:
-            self.transform_output_flag = False
-        else:
-            self.transform_output_flag = True
-        return
-
-    def get_max(self, layer, i, j):
-        bi = i * self.k1
-        bj = j * self.k2
-
-        ei = bi + self.k1
-        if ei > layer.shape[0]:
-            ei = layer.shape[0]
-        ej = bj + self.k2
-        if ej > layer.shape[1]:
-            ej = layer.shape[1]
-
-        mi = bi
-        mj = bj
-        value = layer[mi, mj]
-        for ki in range(bi, ei):
-            for kj in range(bj, ej):
-                if layer[ki, kj] > value:
-                    value = layer[ki, kj]
-                    mi = ki
-                    mj = kj
-
-        return mi, mj
-
-    def active(self):
-        self.input_keeper.fill(0)
-        indata = self.input_layer.get_output()
-
-        shape = self.output.shape
-        for c in range(shape[0]):
-            layer = indata[c, :, :]
-            for i in range(shape[1]):
-                for j in range(shape[2]):
-                    mi, mj = self.get_max(layer, i, j)
-                    self.output[c, i, j] = layer[mi, mj]
-                    self.input_keeper[c, mi, mj] = 1
-        return
-
-    def calc_error(self):
-        # 1. calc layer delta
-        if self.transform_output_flag:
-            tmp = np.zeros(self.delta.shape).reshape(-1)
-            self.next_layer.calc_input_delta(tmp)
-            np.copyto(self.delta, tmp.reshape(self.delta.shape, order="C"))
-        else:
-            self.next_layer.calc_input_delta(self.delta)
-
-        # 2. since no weights, nor activation function
-        #     no need to calc delta_weights
-        return
-
-    def calc_input_delta(self, input_delta):
-        """calculate input_delta based on input_keeper and self.delta."""
-        # 1. test channel nums are same
-        if input_delta.shape[0] != self.delta.shape[0]:
-            print("Bug, different channels: %s Vs. %s", input_delta.shape, self.delta.shape)
-
-        # 2. calc input_delta
-        input_delta.fill(0.0)
-        shape = self.delta.shape
-        for c in range(shape[0]):
-            layer = self.input_keeper[c, :, :]
-            for i in range(shape[1]):
-                for j in range(shape[2]):
-                    mi, mj = self.get_max(layer, i, j)
-                    input_delta[c, mi, mj] = self.delta[c, i, j]
-        return
-
-    def update_weights(self, lr):
-        """do nothing"""
-        return
-
-    def get_output(self):
-        if self.transform_output_flag:
-            return self.output.reshape(-1, order="C")
-        return self.output
 
 
 def matrix_tostr(m):
@@ -450,3 +366,13 @@ def matrix_tostr(m):
 
     result += "]"
     return result
+
+
+def do_active(kernel):
+    return kernel.active()
+
+
+def do_calc_error(kernel, delta):
+    # print("[498] uuid=%s" % (kernel.uuid, ))
+    kernel.calc_error(delta)
+    return kernel.uuid
