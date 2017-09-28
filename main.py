@@ -65,7 +65,7 @@ def construct_cnn(l2=0.0):
     h2.set_lambda2(l2)
     nn.add_hidden_layer(h2)
 
-    h3 = nn_layer.HiddenLayer("h3", 10, activation.leakyReluFunc)
+    h3 = nn_layer.HiddenLayer("h3", 10, activation.reluFunc)
     h3.set_lambda2(l2)
     nn.add_hidden_layer(h3)
 
