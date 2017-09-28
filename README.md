@@ -14,10 +14,12 @@ cd simpleCNN
 python main.py
 ```
 
-It is very slow. After the training of first epoch, it can get 95.02% correctness on testing set.
+It is very slow. After the training of the second epoch, it can get 97.40% correctness on testing set.
 ```console
-[2017-09-24 23:09:24.113187][train] accuracy=0.9534, avg_cost=0.1490
-[2017-09-24 23:27:59.361241][test] accuracy=0.9502, avg_cost=0.1635
+[2017-09-27 14:30:37.731326][test] accuracy=0.9670, avg_cost=0.1050
+[2017-09-27 16:27:47.301980][train] accuracy=0.9727, avg_cost=0.0874
+[2017-09-27 21:26:10.912253][test] accuracy=0.9740, avg_cost=0.0865
+[2017-09-27 23:06:15.987296][train] accuracy=0.9798, avg_cost=0.0620
 ```
 
 As a comparison, [the similar simple NN model](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch.
