@@ -8,6 +8,7 @@ import numpy as np
 
 from nn import nn_layer
 from nn import conv_layer
+from nn import pooling_layer
 from nn import activation
 from nn import simple_nn
 from util import mnist
@@ -52,7 +53,7 @@ def construct_cnn(l2=0.0):
     nn.add_hidden_layer(c1)
 
     # 2x2 none-overlapping max-pooling
-    p1 = conv_layer.MaxPoolingLayer("pool1", 2, 2)
+    p1 = pooling_layer.MaxPoolingLayer("pool1", 2, 2)
     nn.add_hidden_layer(p1)
 
     # 3. add some full-connected hidden layers
@@ -120,6 +121,7 @@ def evaluate_it(nn, test_data, prefix):
 
 
 def get_lr(step, current_lr):
+    """simple learning rate scheduler"""
     lrs = {0: 0.008, 1: 0.005, 2: 0.003, 5: 0.002, 6: 0.001, 8: 0.0008, 10: 0.0005, 15: 0.0001}
     if step in lrs:
         return lrs[step]

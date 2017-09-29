@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 sys.path.insert(0, "../")
-from nn.conv_layer import MaxPoolingLayer
+from nn.pooling_layer import MaxPoolingLayer
 from nn.nn_layer import InputLayer
 
 
