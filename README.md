@@ -23,7 +23,7 @@ It is very slow. After the training of the forth epoch, it can get 98.50% correc
 [2017-09-28 13:11:32.286327][test] accuracy=0.9836, avg_cost=0.0509
 [2017-09-28 14:54:31.384333][train] accuracy=0.9915, avg_cost=0.0277
 [2017-09-28 20:06:15.679026][test] accuracy=0.9850, avg_cost=0.0481
-
+[2017-09-28 22:04:24.954797][train] accuracy=0.9947, avg_cost=0.0176
 ```
 
 As a comparison, [the similar simple NN model](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch.
