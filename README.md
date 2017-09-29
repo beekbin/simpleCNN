@@ -1,5 +1,5 @@
 # simpleCNN
-This project inherits the [SimpleNN](https://github.com/beekbin/SimpleNN) project, and implements [a convolution layer](https://github.com/beekbin/simpleCNN/blob/master/nn/conv_layer.py) and [a max pooling layer]().
+This project inherits the [SimpleNN](https://github.com/beekbin/SimpleNN) project, and implements [a convolution layer](https://github.com/beekbin/simpleCNN/blob/master/nn/conv_layer.py) and [a max pooling layer](https://github.com/beekbin/simpleCNN/blob/master/nn/pooling_layer.py).
 
 With these two additional layers, a CNN can be built via this simple framework.  The `main.py` file demonstrates how to use the simple framework to build a CNN, and how to train the CNN with `MNIST` dataset.
 
