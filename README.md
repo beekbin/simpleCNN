@@ -92,7 +92,7 @@ cd simpleCNN
 python main.py
 ```
 
-Because of the convelution layer, the training process is very slow: need around 4 hours to finish one echo. But the result is promising: after the training of the forth epoch, it can get 98.50% correctness on testing set.
+Because of the convolution layer, the training process is very slow: takes around 4 hours to finish one echo. But the result is promising: after the training of the forth epoch, it can get 98.50% correctness on testing set.
 ```console
 [2017-09-27 14:30:37.731326][test] accuracy=0.9670, avg_cost=0.1050
 [2017-09-27 16:27:47.301980][train] accuracy=0.9727, avg_cost=0.0874
