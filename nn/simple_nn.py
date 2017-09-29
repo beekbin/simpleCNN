@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
+from datetime import datetime
 
 
 class NNetwork(object):
@@ -79,7 +80,7 @@ class NNetwork(object):
             layer.calc_error()
 
         if len(self.errors) == 1000:
-            print("cost=%.3f" % (sum(self.errors)/len(self.errors)))
+            print("[%s] cost=%.3f" % (str(datetime.now()), sum(self.errors)/len(self.errors)))
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
         return
