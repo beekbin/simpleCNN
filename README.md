@@ -1,11 +1,13 @@
 # simpleCNN
+This project inherits the [SimpleNN](https://github.com/beekbin/SimpleNN) project, and implements a convolution layer and a max pooling layer.
+With these two additional layers, a CNN can be built via this simple framework.  The `main.py` file demonstrates how to use the simple framework to build a CNN, and how to train the CNN with `MNIST` dataset.
 
 # Construct the CNN
 This neural networks contain 1 convolution layer, 1 max pooling layer, 3 fully connected hidden layers
 and a softmax output layer. 
 
-The convolution layer has 16 kernels, 8 of them are 3x3 kernels, and 8 of them are 5x5 kernels. With zero-padding, each kernel will preserve the dimensions of the input data.
-The max pooling layer does 2x2 none-overlapping max pooling, and the dimensions of its output will be half (or half+1) of the input dimensions.
+The convolution layer has 16 kernels, 8 of them are `3x3` kernels, and 8 of them are `5x5` kernels. With zero-padding, each kernel will preserve the dimensions of the input data.
+The max pooling layer does `2x2` none-overlapping max pooling, and the dimensions of its output will be half (or half+1) of the input dimensions.
 
 
 ```python
@@ -71,25 +73,25 @@ def construct_cnn(l2=0.0):
     nn.connect_layers()
     print(nn.get_detail())
     return nn
-
 ```
 
 
+
 # Run it
-## 1. get data
+### 1. get data
 ```bash
 cd simpleCNN
 cd data
 sh get.sh
 ```
 
-## 2. train the model
+### 2. train the model
 ```bash
 cd simpleCNN
 python main.py
 ```
 
-It is very slow. After the training of the forth epoch, it can get 98.50% correctness on testing set.
+Because of the convelution layer, the training process is very slow: need around 4 hours to finish one echo. But the result is promising: after the training of the forth epoch, it can get 98.50% correctness on testing set.
 ```console
 [2017-09-27 14:30:37.731326][test] accuracy=0.9670, avg_cost=0.1050
 [2017-09-27 16:27:47.301980][train] accuracy=0.9727, avg_cost=0.0874
@@ -101,7 +103,7 @@ It is very slow. After the training of the forth epoch, it can get 98.50% correc
 [2017-09-28 22:04:24.954797][train] accuracy=0.9947, avg_cost=0.0176
 ```
 
-As a comparison, [the similar simple NN model](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch, and only gets 98.11% at best.
+As a comparison, [the similar simple NN model (without the ConvLayer + MaxPoolingLayer)](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch, and only gets 98.11% at best.
 ```console
 [2017-09-24 23:12:26.834471][train] accuracy=0.9526, avg_cost=0.1555
 [2017-09-24 23:12:27.730683][test] accuracy=0.9474, avg_cost=0.1725
