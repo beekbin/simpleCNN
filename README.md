@@ -1,5 +1,78 @@
 # simpleCNN
 
+# Construct the CNN
+This neural networks contain 1 convolution layer, 1 max pooling layer, 2 fully connected hidden layers
+and a softmax output layer. The convolution layer has 16 kernels, 8 of them are 3x3 kernels, and 8 of them are 5x5 kernels.
+The max pooling layer is a 2x2 none-overlapping max pooling layer.
+
+
+```python
+def get_kernels():
+    result = []
+    uuid = 1
+
+    # 1. 3x3 kernels
+    for i in range(8):
+        func = activation.reluFunc
+        if i % 3 == 0:
+            func = activation.tanhFunc
+        kernel = conv_layer.Kernel(3, func, uuid)
+        result.append(kernel)
+        uuid += 1
+
+    # 2. 5x5 kernels
+    for i in range(8):
+        func = activation.reluFunc
+        if i % 3 == 0:
+            func = activation.tanhFunc
+        kernel = conv_layer.Kernel(5, func, uuid)
+        result.append(kernel)
+        uuid += 1
+    return result
+
+
+def construct_cnn(l2=0.0):
+    img_input = nn_layer.InputLayer("mnist_input", 784)
+    output_layer = nn_layer.SoftmaxOutputLayer("mnist_output", 10)
+
+    # 1. set input and output layers
+    nn = simple_nn.NNetwork()
+    nn.set_input(img_input)
+    nn.set_output(output_layer)
+
+    # 2. add Conv-Pooling layers
+    c1 = conv_layer.ConvLayer("conv1")
+    c1.set_kernels(get_kernels())
+    nn.add_hidden_layer(c1)
+
+    # 2x2 none-overlapping max-pooling
+    p1 = pooling_layer.MaxPoolingLayer("pool1", 2, 2)
+    nn.add_hidden_layer(p1)
+
+    # 3. add some full-connected hidden layers
+    h1 = nn_layer.HiddenLayer("h1", 512, activation.tanhFunc)
+    h1.set_lambda2(l2)
+    nn.add_hidden_layer(h1)
+
+    h2 = nn_layer.HiddenLayer("h2", 128, activation.tanhFunc)
+    h2.set_lambda2(l2)
+    nn.add_hidden_layer(h2)
+
+    h3 = nn_layer.HiddenLayer("h3", 10, activation.reluFunc)
+    h3.set_lambda2(l2)
+    nn.add_hidden_layer(h3)
+
+    # 3. complete nn construction
+    # print("%s" % (nn))
+    fake_img = np.zeros((1, 28, 28))
+    img_input.feed(fake_img)
+    nn.connect_layers()
+    print(nn.get_detail())
+    return nn
+
+```
+
+
 # Run it
 ## 1. get data
 ```bash
