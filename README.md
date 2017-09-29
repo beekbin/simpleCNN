@@ -1,9 +1,11 @@
 # simpleCNN
 
 # Construct the CNN
-This neural networks contain 1 convolution layer, 1 max pooling layer, 2 fully connected hidden layers
-and a softmax output layer. The convolution layer has 16 kernels, 8 of them are 3x3 kernels, and 8 of them are 5x5 kernels.
-The max pooling layer is a 2x2 none-overlapping max pooling layer.
+This neural networks contain 1 convolution layer, 1 max pooling layer, 3 fully connected hidden layers
+and a softmax output layer. 
+
+The convolution layer has 16 kernels, 8 of them are 3x3 kernels, and 8 of them are 5x5 kernels. With zero-padding, each kernel will preserve the dimensions of the input data.
+The max pooling layer does 2x2 none-overlapping max pooling, and the dimensions of its output will be half (or half+1) of the input dimensions.
 
 
 ```python
