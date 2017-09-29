@@ -101,7 +101,7 @@ It is very slow. After the training of the forth epoch, it can get 98.50% correc
 [2017-09-28 22:04:24.954797][train] accuracy=0.9947, avg_cost=0.0176
 ```
 
-As a comparison, [the similar simple NN model](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch.
+As a comparison, [the similar simple NN model](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch, and only gets 98.11% at best.
 ```console
 [2017-09-24 23:12:26.834471][train] accuracy=0.9526, avg_cost=0.1555
 [2017-09-24 23:12:27.730683][test] accuracy=0.9474, avg_cost=0.1725
