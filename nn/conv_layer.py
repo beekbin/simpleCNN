@@ -346,7 +346,6 @@ class ConvLayer(Layer):
         return
 
 
-
 def matrix_tostr(m):
     """this function is used for debugging only."""
     t = m.reshape(-1)

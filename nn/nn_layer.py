@@ -175,7 +175,8 @@ class SoftmaxOutputLayer(ActiveLayer):
 
     def active(self):
         x = self.input_layer.get_output()
-        np.exp(x, out=self.output)
+        z = x - np.max(x)
+        np.exp(z, out=self.output)
         d = np.sum(self.output)
         self.output /= d
         return
