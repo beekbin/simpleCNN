@@ -317,10 +317,9 @@ class ConvLayer(Layer):
         return
 
     def active(self):
-        # x = self.input_layer.get_output()
         for i in range(len(self.kernels)):
             k = self.kernels[i]
-            self.output[i, :, :] = k.active()
+            self.output[i] = k.active()
         return
 
     def calc_input_delta(self, delta):
