@@ -83,8 +83,7 @@ class NNetwork(object):
             layer.calc_error()
 
         if len(self.errors) == self.info_interval:
-            msg = "[%s] cost=%.3f" % (sum(self.errors)/len(self.errors))
-            logging.info(msg)
+            logging.info("cost=%.3f" % (sum(self.errors)/len(self.errors), ))
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
         return
