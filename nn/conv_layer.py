@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import math
+import logging
 import numpy as np
 from nn_layer import Layer
 
@@ -138,7 +139,10 @@ class Kernel(object):
         self.uuid = uuid
 
         if size % 2 != 1:
-            print("[WARNING] kernel size is not an even number: %s" % (size))
+            msg = "[WARNING] kernel size is not an even number: %s" % (size)
+            logging.warning(msg)
+            print(msg)
+
         return
 
     def init_weights(self):
@@ -165,7 +169,9 @@ class Kernel(object):
         input_data = input_layer.get_output()
         shape = input_data.shape
         if len(shape) != 3:
-            print("wrong input layer shape: %s %s" % (input_layer, shape))
+            msg = "wrong input layer shape: %s %s" % (input_layer, shape)
+            print(msg)
+            logging.error(msg)
             return -1
 
         return 0
@@ -231,9 +237,9 @@ class Kernel(object):
         self.delta_bias = np.sum(self.delta)
 
         if self.uuid == 3 and self.counter % 1000 == 0:
-            print("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
-            print("[235] weights=%s" % (matrix_tostr(self.weights)))
-            print("[236] delta=%s" % (np.sum(np.absolute(self.delta))))
+            logging.debug("[200] w.delta=%s, bias.delta=%s" % (matrix_tostr(self.delta_weights), self.delta_bias))
+            logging.debug("[235] weights=%s" % (matrix_tostr(self.weights)))
+            logging.debug("[236] delta=%s" % (np.sum(np.absolute(self.delta))))
         return
 
     def calc_input_delta(self):

@@ -1,7 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
-from datetime import datetime
+import logging
 
 
 class NNetwork(object):
@@ -10,6 +10,7 @@ class NNetwork(object):
         self.output_layer = None
         self.hidden_layers = []
         self.errors = []
+        self.info_interval = 1000
         return
 
     def set_input(self, input_layer):
@@ -26,21 +27,23 @@ class NNetwork(object):
 
     def check(self):
         if self.input_layer is None:
-            print("input layer is None.")
+            logging.error("input layer is None.")
             return False
         if self.output_layer is None:
-            print("output layer is None.")
+            logging.error("output layer is None.")
             return False
 
         if len(self.hidden_layers) < 1:
-            print("hidden layers is empty.")
+            logging.error("hidden layers is empty.")
             return False
         return True
 
     def connect_layers(self):
         """set the input and output for the layers"""
         if not self.check():
-            print("Failed to check neural network.")
+            msg = "Failed to check neural network."
+            print(msg)
+            logging.error(msg)
             return
 
         # 1. set input layer
@@ -79,8 +82,9 @@ class NNetwork(object):
         for layer in reversed(self.hidden_layers):
             layer.calc_error()
 
-        if len(self.errors) == 1000:
-            print("[%s] cost=%.3f" % (str(datetime.now()), sum(self.errors)/len(self.errors)))
+        if len(self.errors) == self.info_interval:
+            msg = "[%s] cost=%.3f" % (sum(self.errors)/len(self.errors))
+            logging.info(msg)
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
         return

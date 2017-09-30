@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
+import logging
 from nn_layer import Layer
 from conv_layer import ConvLayer
 
@@ -103,7 +104,10 @@ class MaxPoolingLayer(Layer):
         """calculate input_delta based on input_keeper and self.delta."""
         # 1. test channel nums are same
         if input_delta.shape[0] != self.delta.shape[0]:
-            print("Bug, different channels: %s Vs. %s", input_delta.shape, self.delta.shape)
+            msg = ("Bug, different channels: %s Vs. %s", input_delta.shape, self.delta.shape)
+            logging.error(msg)
+            print(msg)
+            return
 
         # 2. calc input_delta
         input_delta.fill(0.0)
