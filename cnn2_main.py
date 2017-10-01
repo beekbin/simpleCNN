@@ -52,7 +52,7 @@ def construct_cnn(l2=0.0):
     nn.set_input(img_input)
     nn.set_output(output_layer)
 
-    # 2. add Conv-Pooling layers
+    # 2. add First Conv-Pooling layers
     c1 = conv_layer.ConvLayer("conv1")
     c1.set_kernels(get_kernels(16))
     nn.add_hidden_layer(c1)
@@ -61,12 +61,11 @@ def construct_cnn(l2=0.0):
     p1 = pooling_layer.MaxPoolingLayer("pool1", 2, 2)
     nn.add_hidden_layer(p1)
 
-    # 3. add another Conv-Pooling layers
+    # 3. add Second Conv-Pooling layers
     c2 = conv_layer.ConvLayer("conv2")
-    c2.set_kernels(get_kernels(16))
+    c2.set_kernels(get_kernels(32))
     nn.add_hidden_layer(c2)
 
-    # 2x2 none-overlapping max-pooling
     p2 = pooling_layer.MaxPoolingLayer("pool2", 2, 2)
     nn.add_hidden_layer(p2)
 
