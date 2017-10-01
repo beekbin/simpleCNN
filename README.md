@@ -92,12 +92,14 @@ cd simpleCNN
 python main.py
 ```
 
-Because of the convolution layer, the training process is very slow: takes around 4 hours to finish one echo. But the result is promising: after the training of the second epoch, it can get 98.50% correctness on testing set.
+Because of the convolution layer, the training process is very slow: takes around 4 hours to finish one echo. But the result is promising: after the training of the second epoch, it can get 98.54% correctness on testing set.
 ```console
 [2017-09-30 14:43:45.445192][test] accuracy=0.9741, avg_cost=0.0796
 [2017-09-30 16:17:21.345727][train] accuracy=0.9792, avg_cost=0.0673
 [2017-09-30 20:55:07.247804][test] accuracy=0.9854, avg_cost=0.0480
 [2017-09-30 22:28:31.628410][train] accuracy=0.9890, avg_cost=0.0345
+[2017-10-01 11:13:07.159749][test] accuracy=0.9861, avg_cost=0.0426
+[2017-10-01 12:41:43.706586][train] accuracy=0.9936, avg_cost=0.0216
 ```
 
 As a comparison, [the similar simple NN model (without the ConvLayer + MaxPoolingLayer)](https://github.com/beekbin/SimpleNN) gets 94.74% correctness on testing set after the first epoch, and only gets 98.11% at best (11 epochs).
