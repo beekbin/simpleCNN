@@ -1,5 +1,5 @@
 # simpleCNN
-This project inherits the [SimpleNN](https://github.com/beekbin/SimpleNN) project, and implements [a convolution layer](https://github.com/beekbin/simpleCNN/blob/master/nn/conv_layer.py) and [a max pooling layer](https://github.com/beekbin/simpleCNN/blob/master/nn/pooling_layer.py).
+[A convolution layer](https://github.com/beekbin/simpleCNN/blob/master/nn/conv_layer.py) and [a max pooling layer](https://github.com/beekbin/simpleCNN/blob/master/nn/pooling_layer.py) are added to my [vanilla neural network framework](https://github.com/beekbin/SimpleNN). 
 
 With these two additional layers, a CNN can be built via this simple framework.  The `main.py` file demonstrates how to use the simple framework to build a CNN, and how to train the CNN with `MNIST` dataset.
 
@@ -92,16 +92,12 @@ cd simpleCNN
 python main.py
 ```
 
-Because of the convolution layer, the training process is very slow: takes around 4 hours to finish one echo. But the result is promising: after the training of the forth epoch, it can get 98.50% correctness on testing set.
+Because of the convolution layer, the training process is very slow: takes around 4 hours to finish one echo. But the result is promising: after the training of the second epoch, it can get 98.50% correctness on testing set.
 ```console
-[2017-09-27 14:30:37.731326][test] accuracy=0.9670, avg_cost=0.1050
-[2017-09-27 16:27:47.301980][train] accuracy=0.9727, avg_cost=0.0874
-[2017-09-27 21:26:10.912253][test] accuracy=0.9740, avg_cost=0.0865
-[2017-09-27 23:06:15.987296][train] accuracy=0.9798, avg_cost=0.0620
-[2017-09-28 13:11:32.286327][test] accuracy=0.9836, avg_cost=0.0509
-[2017-09-28 14:54:31.384333][train] accuracy=0.9915, avg_cost=0.0277
-[2017-09-28 20:06:15.679026][test] accuracy=0.9850, avg_cost=0.0481
-[2017-09-28 22:04:24.954797][train] accuracy=0.9947, avg_cost=0.0176
+[2017-09-30 14:43:45.445192][test] accuracy=0.9741, avg_cost=0.0796
+[2017-09-30 16:17:21.345727][train] accuracy=0.9792, avg_cost=0.0673
+[2017-09-30 20:55:07.247804][test] accuracy=0.9854, avg_cost=0.0480
+[2017-09-30 22:28:31.628410][train] accuracy=0.9890, avg_cost=0.0345
 ```
 
 As a comparison, [the similar simple NN model (without the ConvLayer + MaxPoolingLayer)](https://github.com/beekbin/SimpleNN) gets 94.47% correctness on testing set after the first epoch, and only gets 98.11% at best.
