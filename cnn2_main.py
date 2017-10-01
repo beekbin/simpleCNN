@@ -63,12 +63,12 @@ def construct_cnn(l2=0.0):
 
     # 3. add another Conv-Pooling layers
     c2 = conv_layer.ConvLayer("conv2")
-    c2.set_kernels(get_kernels(32))
+    c2.set_kernels(get_kernels(16))
     nn.add_hidden_layer(c2)
 
     # 2x2 none-overlapping max-pooling
-    p1 = pooling_layer.MaxPoolingLayer("pool2", 2, 2)
-    nn.add_hidden_layer(p1)
+    p2 = pooling_layer.MaxPoolingLayer("pool2", 2, 2)
+    nn.add_hidden_layer(p2)
 
     # 4. add some full-connected hidden layers
     h1 = nn_layer.HiddenLayer("h1", 512, activation.tanhFunc)
