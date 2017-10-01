@@ -10,6 +10,9 @@ def main():
 
     train_data = mnist.load_data_3d(data, "train")
     test_data = mnist.load_data_3d(data, "test")
+
+    train_data = mnist.load_data_1d(data, "train")
+    test_data = mnist.load_data_1d(data, "test")
     return
 
 
