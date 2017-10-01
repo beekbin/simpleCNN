@@ -10,7 +10,11 @@ class NNetwork(object):
         self.output_layer = None
         self.hidden_layers = []
         self.errors = []
-        self.info_interval = 1000
+        self.log_interval = 1000
+        return
+
+    def set_log_interval(self, steps):
+        self.log_interval = steps
         return
 
     def set_input(self, input_layer):
@@ -82,7 +86,7 @@ class NNetwork(object):
         for layer in reversed(self.hidden_layers):
             layer.calc_error()
 
-        if len(self.errors) == self.info_interval:
+        if len(self.errors) == self.log_interval:
             logging.info("cost=%.3f" % (sum(self.errors)/len(self.errors), ))
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
