@@ -102,6 +102,8 @@ Because of the convolution layer, the training process is very slow: takes aroun
 [2017-10-01 12:41:43.706586][train] accuracy=0.9936, avg_cost=0.0216
 [2017-10-01 16:44:47.117386][test] accuracy=0.9862, avg_cost=0.0412
 [2017-10-01 18:19:10.587616][train] accuracy=0.9951, avg_cost=0.0163
+[2017-10-01 22:32:35.422284][test] accuracy=0.9882, avg_cost=0.0379
+[2017-10-02 00:05:24.414455][train] accuracy=0.9973, avg_cost=0.0108
 ```
 
 As a comparison, [the similar simple NN model (without the ConvLayer + MaxPoolingLayer)](https://github.com/beekbin/SimpleNN) gets 94.74% correctness on testing set after the first epoch, and only gets 98.11% at best (11 epochs).
