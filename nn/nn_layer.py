@@ -16,7 +16,7 @@ def myrandom_vector(d1):
 #  https://stats.stackexchange.com/questions/204114/deep-neural-network-weight-initialization?rq=1
 #  https://arxiv.org/abs/1206.5533  Practical Recommendations for Gradient-Based Training of Deep Architectures
 def sigmoid_init_weights(d1, d2):
-    num = d1 * d2
+    num = d1 + d2
     r = math.sqrt(6.0/num)
     tmp = np.random.uniform(-r, r, num)
     return tmp.reshape((d1, d2))

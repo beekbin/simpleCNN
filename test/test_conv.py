@@ -228,15 +228,15 @@ def test_active():
 
 def test4():
     # 1. init
-    shape = (28, 28)
+    shape = (256, 256)
     kshape = (3, 3)
-    x = np.array(range(784), dtype=np.float64).reshape(shape)
+    x = np.array(range(65536), dtype=np.float64).reshape(shape)
     kernel = np.ones(kshape, dtype=np.float64)
     padding_size = int((kshape[0]-1)/2)
 
     # 2. test 1
     begin = datetime.now()
-    for i in range(1000):
+    for i in range(100):
         o = calc_conv2(x, kernel, padding_size)
     delta = datetime.now() - begin
     print("[%s] delta.1=%s" % (str(begin), str(delta)))
@@ -244,7 +244,7 @@ def test4():
     # 3. test 2
     begin = datetime.now()
     pool = Pool(processes=4)
-    for i in range(125):
+    for i in range(25):
         args = (x, kernel, padding_size)
         results = [pool.apply_async(calc_conv2, args) for i in range(8)]
         for i in range(8):
@@ -260,8 +260,8 @@ def test4():
 
 
 def main():
-    test()
-    test2()
+    # test()
+    # test2()
     test4()
     # test_normal_active()
     # test_active()
