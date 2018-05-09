@@ -1,4 +1,6 @@
 # simpleCNN
+ It has CNN layer, Pooling layer, FC layer, and softmax layer. The CNN layer, Pooling layer and FC layer can be stacked up to construct deeper neural networks.
+           
 [A convolution layer](https://github.com/beekbin/simpleCNN/blob/master/nn/conv_layer.py) and [a max pooling layer](https://github.com/beekbin/simpleCNN/blob/master/nn/pooling_layer.py) are added to my [vanilla neural network framework](https://github.com/beekbin/SimpleNN). 
 
 With these two additional layers, a CNN can be built via this simple framework.  The `main.py` file demonstrates how to use the simple framework to build a CNN, and how to train the CNN with `MNIST` dataset.
