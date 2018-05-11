@@ -2,6 +2,11 @@ from __future__ import division
 from __future__ import print_function
 import numpy as np
 import logging
+
+## Note: for python 3.x, use
+# from .nn_layer import Layer
+# from .conv_layer import ConvLayer
+
 from nn_layer import Layer
 from conv_layer import ConvLayer
 
