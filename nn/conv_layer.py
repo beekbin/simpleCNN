@@ -3,6 +3,9 @@ from __future__ import print_function
 import math
 import logging
 import numpy as np
+
+##Note: for python 3.X, use:
+# from .nn_layer import Layer
 from nn_layer import Layer
 
 
