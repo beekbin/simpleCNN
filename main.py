@@ -86,7 +86,7 @@ def train_it(nn, train_data, lr):
     imgs = train_data[1]
 
     # shuffle the data
-    alist = range(labels.shape[0])
+    alist = list(range(labels.shape[0]))
     shuffle(alist)
 
     num = 0
